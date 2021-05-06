@@ -17,5 +17,8 @@ from data import views
 from django.urls import path
 
 urlpatterns = [
-    path('', views.test),
+    path('version', views.get_version),
+    path('songs',views.get_songs),
+    path('questions',views.get_questions),
+    path('',views.test)
 ]

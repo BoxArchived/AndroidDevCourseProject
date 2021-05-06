@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">King of Karaoke</string>
+    <string name="com_auth0_domain">boxmars.us.auth0.com</string>
+    <string name="com_auth0_client_id">2s5wqRZLszkCkfsIi5nCkAQ9Tuntt3Se</string>
+    <string name="login_button">Login</string>
+    <string name="logout_button">Logout</string>
+    <string name="com_auth0_scheme">demo</string>
 </resources>
