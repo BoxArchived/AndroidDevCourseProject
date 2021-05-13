@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auth0.android.Auth0;
@@ -21,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Auth0 auth0;
     private static User user;
+    Button loginBtn;
+    Button logoutBtn;
+    Button startBtn;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +35,18 @@ public class MainActivity extends AppCompatActivity {
         auth0=new Auth0(getString(R.string.com_auth0_client_id),getString(R.string.com_auth0_domain));
         user=new User();
 
-        Button loginBtn=findViewById(R.id.loginBtn);
-        Button logoutBtn=findViewById(R.id.logoutBtn);
+        loginBtn=findViewById(R.id.loginBtn);
+        logoutBtn=findViewById(R.id.logoutBtn);
+        startBtn=findViewById(R.id.startQuizBtn);
+        textView=findViewById(R.id.infoTextView);
         loginBtn.setEnabled(true);
         logoutBtn.setEnabled(false);
+        startBtn.setEnabled(false);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
-                if (user!=null){
-                    loginBtn.setEnabled(false);
-                    logoutBtn.setEnabled(true);
 
-                }
             }
         });
 
@@ -49,22 +54,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 logout();
-                if (user==null){
-                    loginBtn.setEnabled(true);
-                    logoutBtn.setEnabled(false);
-                }
+
+            }
+        });
+
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),QuizActivity.class);
+                startActivity(intent);
             }
         });
     }
 
     private void login(){
-        Toast.makeText(MainActivity.this, "Error: ", Toast.LENGTH_SHORT).show();
         WebAuthProvider.login(auth0)
                 .withScheme("demo")
                 .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(this, new Callback<Credentials, AuthenticationException>() {
                     @Override
                     public void onSuccess(Credentials credentials) {
+                        if (user==null){
+                            user=new User();
+                        }
                         user.setAccessToken(credentials.getAccessToken());
                         user.setIdToken(credentials.getIdToken());
                         AuthenticationAPIClient authenticationAPIClient=new AuthenticationAPIClient(auth0);
@@ -74,6 +86,17 @@ public class MainActivity extends AppCompatActivity {
                                     public void onSuccess(UserProfile userProfile) {
                                         user.setEmail(userProfile.getEmail());
                                         user.setUsername(userProfile.getName());
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (user!=null){
+                                                    loginBtn.setEnabled(false);
+                                                    logoutBtn.setEnabled(true);
+                                                    startBtn.setEnabled(true);
+                                                    textView.setText(user.getUsername()+", you can start your quiz now!");
+                                                }
+                                            }
+                                        });
                                     }
 
                                     @Override
@@ -90,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
     }
 
     private void logout() {
@@ -99,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@Nullable Void payload) {
                         user=null;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loginBtn.setEnabled(true);
+                                logoutBtn.setEnabled(false);
+                                startBtn.setEnabled(false);
+                                textView.setText("Logout successfully");
+                            }
+                        });
                     }
 
                     @Override
@@ -106,5 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+
     }
 }
