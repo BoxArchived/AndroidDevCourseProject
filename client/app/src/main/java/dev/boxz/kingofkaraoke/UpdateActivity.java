@@ -14,7 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -69,8 +72,33 @@ public class UpdateActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                        Bitmap bitmap= BitmapFactory.decodeStream(response.body().byteStream());
-                                        
+                                        byte[] data=response.body().bytes();
+                                        try {
+                                            File file=new File(getFilesDir(),jsonObject.getString("coverURL"));
+                                            if (file.exists()){
+                                                file.delete();
+                                            }
+                                            FileOutputStream outputStream=new FileOutputStream(file);
+                                            outputStream.write(data);
+                                            outputStream.close();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+
+
+
+                                    }
+                                });
+                                request1=new Request.Builder().url(FILE_URL+jsonObject.getString("songURL")).build();
+                                okHttpClient.newCall(request1).enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                    }
+
+                                    @Override
+                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
                                     }
                                 });
