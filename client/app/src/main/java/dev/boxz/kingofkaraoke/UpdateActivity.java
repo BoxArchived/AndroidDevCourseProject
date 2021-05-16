@@ -2,6 +2,8 @@ package dev.boxz.kingofkaraoke;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -57,11 +59,26 @@ public class UpdateActivity extends AppCompatActivity {
                                 JSONObject jsonObject=array.getJSONObject(i);
                                 Question question=new Question(jsonObject);
                                 Question.questionArrayList.add(question);
+                                OkHttpClient okHttpClient=new OkHttpClient();
+                                Request request1=new Request.Builder().url(FILE_URL+jsonObject.getString("coverURL")).build();
+                                okHttpClient.newCall(request1).enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    @Override
+                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                        Bitmap bitmap= BitmapFactory.decodeStream(response.body().byteStream());
+                                        
+
+                                    }
+                                });
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        
+
 
                     }
                 });
