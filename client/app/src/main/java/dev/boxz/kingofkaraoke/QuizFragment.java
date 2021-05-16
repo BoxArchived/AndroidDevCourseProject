@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 
 public class QuizFragment extends Fragment {
-
     private static final String QUESTION = "QUESTION";
 
 

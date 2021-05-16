@@ -5,12 +5,14 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Question implements Serializable {
+    public static final String FILE_NAME="question.json";
     public static  ArrayList<Question> questionArrayList=new ArrayList<>();
     private String filePath;
     private String question;
-    private ArrayList<String> options;
+    private ArrayList<Integer> options;
     private String imagePath;
     private Integer answer;
     private String singer;
@@ -38,11 +40,11 @@ public class Question implements Serializable {
         this.question = question;
     }
 
-    public ArrayList<String> getOptions() {
+    public ArrayList<Integer> getOptions() {
         return options;
     }
 
-    public void setOptions(ArrayList<String> options) {
+    public void setOptions(ArrayList<Integer> options) {
         this.options = options;
     }
 
@@ -68,5 +70,20 @@ public class Question implements Serializable {
 
     public void setSinger(String singer) {
         this.singer = singer;
+    }
+
+    public static void generateOption(){
+        for (int i = 0; i < questionArrayList.size(); i++) {
+            ArrayList<Integer> options=new ArrayList<>();
+            Random random=new Random();
+            while(options.size()<=3){
+                int  result=random.nextInt(questionArrayList.size());
+                if (result!=i){
+                    options.add(result);
+                }
+            }
+            int result=random.nextInt(4);
+            options.add(result,i);
+        }
     }
 }
