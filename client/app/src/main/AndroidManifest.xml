@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KingOfKaraoke">
         <activity android:name=".UpdateActivity"
-            android:theme="@style/Theme.MaterialComponents.Dialog">
+            android:theme="@style/Theme.AppCompat.Dialog.MinWidth">
 
         </activity>
         <activity android:name=".QuizActivity" />

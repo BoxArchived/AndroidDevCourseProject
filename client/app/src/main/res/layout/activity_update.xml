@@ -10,20 +10,32 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:textAlignment="center"
         android:layout_height="wrap_content"
         android:text="@string/upadte" />
 
-    <Button
-        android:id="@+id/button3"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@android:string/yes" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@android:string/no" />
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@android:string/yes" />
+
+        <Button
+            android:id="@+id/no"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@android:string/no" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
