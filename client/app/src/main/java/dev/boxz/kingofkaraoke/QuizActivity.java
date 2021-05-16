@@ -10,18 +10,18 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
+import okhttp3.OkHttpClient;
+
 public class QuizActivity extends AppCompatActivity {
     final String  API_URL="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-
-//        Intent intent=new Intent(this,UpdateActivity.class);
-//        startActivity(intent);
-        ArrayList<Question> questionArrayList=new ArrayList<>();
+        Intent intent=new Intent(this,UpdateActivity.class);
+        startActivity(intent);
         ViewPager2 viewPager2=findViewById(R.id.viewPage);
-        QuizAdapter quizAdapter=new QuizAdapter(QuizActivity.this,questionArrayList);
+        QuizAdapter quizAdapter=new QuizAdapter(QuizActivity.this,Question.questionArrayList);
         viewPager2.setAdapter(quizAdapter);
 
     }
