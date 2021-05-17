@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -59,6 +60,10 @@ public class QuizFragment extends Fragment {
         Button pause=view.findViewById(R.id.pauseMusicBtn);
         ImageView imageView=view.findViewById(R.id.coverImage);
         RadioGroup radioGroup=view.findViewById(R.id.radioGroup);
+        RadioButton radioButtonA=view.findViewById(R.id.optionA);
+        RadioButton radioButtonB=view.findViewById(R.id.optionB);
+        RadioButton radioButtonC=view.findViewById(R.id.optionC);
+        RadioButton radioButtonD=view.findViewById(R.id.optionD);
         questionTextView.setText("Who is the singer?");
         play.setEnabled(true);
         pause.setEnabled(false);
@@ -124,10 +129,38 @@ public class QuizFragment extends Fragment {
         });
         Bitmap bitmap= BitmapFactory.decodeFile(new File(getActivity().getFilesDir(),mQuestion.getImagePath()).toString());
         imageView.setImageBitmap(bitmap);
+        if (Question.userAnswer.get(Question.questionArrayList.indexOf(mQuestion))==0){
+            radioButtonA.setChecked(true);
+        }
+        if (Question.userAnswer.get(Question.questionArrayList.indexOf(mQuestion))==1){
+            radioButtonB.setChecked(true);
+        }
+        if (Question.userAnswer.get(Question.questionArrayList.indexOf(mQuestion))==2){
+            radioButtonC.setChecked(true);
+        }
+        if (Question.userAnswer.get(Question.questionArrayList.indexOf(mQuestion))==3){
+            radioButtonD.setChecked(true);
+        }
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
+                int location=Question.questionArrayList.indexOf(mQuestion);
+                if (checkedId==R.id.optionA){
+                    Question.userAnswer.set(location,0);
+                    Question.checkAnswer(mQuestion,0);
+                }
+                if (checkedId==R.id.optionB){
+                    Question.userAnswer.set(location,1);
+                    Question.checkAnswer(mQuestion,1);
+                }
+                if (checkedId==R.id.optionC){
+                    Question.userAnswer.set(location,2);
+                    Question.checkAnswer(mQuestion,2);
+                }
+                if (checkedId==R.id.optionD){
+                    Question.userAnswer.set(location,3);
+                    Question.checkAnswer(mQuestion,3);
+                }
             }
         });
 
