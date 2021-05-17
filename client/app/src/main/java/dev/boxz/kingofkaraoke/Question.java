@@ -10,8 +10,8 @@ import java.util.Random;
 public class Question implements Serializable {
     public static final String FILE_NAME="question.json";
     public static ArrayList<Question> questionArrayList=new ArrayList<>();
-    public static ArrayList<Integer> userAnswer;
-    public static ArrayList<Boolean> isCorrectList;
+    public static ArrayList<Integer> userAnswer=new ArrayList<>();
+    public static ArrayList<Boolean> isCorrectList=new ArrayList<>();
     private String filePath;
     private String question;
     private ArrayList<Integer> options;
@@ -80,9 +80,9 @@ public class Question implements Serializable {
             Random random=new Random();
             while(options.size()<=3){
                 int  result=random.nextInt(questionArrayList.size());
-                if (result!=i&&!options.contains(result)){
+//                if (result!=i&&!options.contains(result)){
                     options.add(result);
-                }
+//                }
             }
             int result=random.nextInt(4);
             options.add(result,i);
@@ -97,6 +97,5 @@ public class Question implements Serializable {
     public static void checkAnswer(Question question,int answer){
         int location=questionArrayList.indexOf(question);
         isCorrectList.set(location,question.getAnswer()==answer);
-
     }
 }
