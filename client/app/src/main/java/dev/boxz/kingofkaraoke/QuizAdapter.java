@@ -18,7 +18,7 @@ public class QuizAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         QuizFragment quizFragment=QuizFragment.newInstance(questionArrayList.get(position));
-        return null;
+        return quizFragment;
     }
 
     @Override
