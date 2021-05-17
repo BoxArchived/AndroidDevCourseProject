@@ -86,6 +86,8 @@ public class Question implements Serializable {
             }
             int result=random.nextInt(4);
             options.add(result,i);
+            questionArrayList.get(i).setOptions(options);
+            questionArrayList.get(i).setAnswer(result);
             isCorrectList.add(false);
             userAnswer.add(0);
         }
@@ -94,8 +96,7 @@ public class Question implements Serializable {
 
     public static void checkAnswer(Question question,int answer){
         int location=questionArrayList.indexOf(question);
-        Boolean isCorrect=isCorrectList.get(location);
-        isCorrect=question.getAnswer()==answer;
+        isCorrectList.set(location,question.getAnswer()==answer);
 
     }
 }
