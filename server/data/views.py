@@ -13,7 +13,7 @@ def get_songs(request):
     songs=models.Song.objects.all()
     for song in songs:
         list.append(song.to_dict())
-    return  JsonResponse(list)
+    return  JsonResponse(list, safe=False)
 
 def get_questions(request):
     list=[]
