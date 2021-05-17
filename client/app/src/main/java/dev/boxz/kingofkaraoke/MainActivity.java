@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         auth0=new Auth0(getString(R.string.com_auth0_client_id),getString(R.string.com_auth0_domain));
         user=new User();
-
+        Intent intent=new Intent(this,UpdateActivity.class);
+        startActivity(intent);
         loginBtn=findViewById(R.id.loginBtn);
         logoutBtn=findViewById(R.id.logoutBtn);
         startBtn=findViewById(R.id.startQuizBtn);
@@ -130,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
                                 logoutBtn.setEnabled(false);
                                 startBtn.setEnabled(false);
                                 textView.setText("Logout successfully");
+                                for (int i = 0; i < Question.userAnswer.size(); i++) {
+                                    Question.userAnswer.set(i,4);
+                                }
                             }
                         });
                     }
@@ -140,5 +144,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        MainActivity.user = user;
     }
 }
