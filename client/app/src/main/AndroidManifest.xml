@@ -11,11 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KingOfKaraoke">
-        <activity android:name=".UpdateActivity"
-            android:theme="@style/Theme.AppCompat.Dialog.MinWidth">
-
-        </activity>
-        <activity android:name=".QuizActivity" />
+        <activity android:name=".ScoreActivity"></activity>
+        <activity
+            android:name=".UpdateActivity"
+            android:theme="@style/Theme.AppCompat.Dialog.MinWidth"></activity>
+        <activity android:name=".QuizActivity" android:launchMode="singleInstance"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
