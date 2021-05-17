@@ -20,5 +20,5 @@ urlpatterns = [
     path('version', views.get_version),
     path('songs',views.get_songs),
     path('questions',views.get_questions),
-    path('',views.test)
+    # path('',views.test)
 ]
