@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -66,6 +68,15 @@ public class UpdateActivity extends AppCompatActivity {
                     }
 
                 }
+                ArrayList<Question> questionArrayList=new ArrayList<>();
+                Random random=new Random();
+                while (questionArrayList.size()<=8){
+                    int  result=random.nextInt(questionArrayList.size());
+                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+                        questionArrayList.add(Question.questionArrayList.get(result));
+                    }
+                }
+                Question.questionArrayList=questionArrayList;
                 Question.generateOption();
                 finish();
             }

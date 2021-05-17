@@ -9,12 +9,14 @@ import java.util.Random;
 
 public class Question implements Serializable {
     public static final String FILE_NAME="question.json";
-    public static  ArrayList<Question> questionArrayList=new ArrayList<>();
+    public static ArrayList<Question> questionArrayList=new ArrayList<>();
+    public static ArrayList<Integer> userAnswer;
+    public static ArrayList<Boolean> isCorrectList;
     private String filePath;
     private String question;
     private ArrayList<Integer> options;
     private String imagePath;
-    private Integer answer;
+    private int answer;
     private String singer;
 
     public Question(JSONObject data) throws JSONException {
@@ -56,11 +58,11 @@ public class Question implements Serializable {
         this.imagePath = imagePath;
     }
 
-    public Integer getAnswer() {
+    public int getAnswer() {
         return answer;
     }
 
-    public void setAnswer(Integer answer) {
+    public void setAnswer(int answer) {
         this.answer = answer;
     }
 
@@ -78,12 +80,22 @@ public class Question implements Serializable {
             Random random=new Random();
             while(options.size()<=3){
                 int  result=random.nextInt(questionArrayList.size());
-                if (result!=i){
+                if (result!=i&&!options.contains(result)){
                     options.add(result);
                 }
             }
             int result=random.nextInt(4);
             options.add(result,i);
+            isCorrectList.add(false);
+            userAnswer.add(0);
         }
+
+    }
+
+    public static void checkAnswer(Question question,int answer){
+        int location=questionArrayList.indexOf(question);
+        Boolean isCorrect=isCorrectList.get(location);
+        isCorrect=question.getAnswer()==answer;
+
     }
 }
