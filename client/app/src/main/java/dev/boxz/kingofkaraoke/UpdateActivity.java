@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 
 import java.io.BufferedReader;
@@ -31,7 +32,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class UpdateActivity extends AppCompatActivity {
-    final String API_URL="";
+    final String API_URL="http://10.0.2.2:8888/songs";
     Button okBtn;
     Button noBtn;
     ProgressBar progressBar;
@@ -70,8 +71,8 @@ public class UpdateActivity extends AppCompatActivity {
                 }
                 ArrayList<Question> questionArrayList=new ArrayList<>();
                 Random random=new Random();
-                while (questionArrayList.size()<=8){
-                    int  result=random.nextInt(questionArrayList.size());
+                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())&&(Question.questionArrayList!=null||Question.questionArrayList.size()!=0)){
+                    int  result=random.nextInt(Question.questionArrayList.size());
                     if (!questionArrayList.contains(Question.questionArrayList.get(result))){
                         questionArrayList.add(Question.questionArrayList.get(result));
                     }
@@ -90,6 +91,7 @@ public class UpdateActivity extends AppCompatActivity {
                 okHttpClient.newCall(requestApi).enqueue(new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                        Toast.makeText(getApplicationContext(),"asdasd",Toast.LENGTH_LONG);
                         e.printStackTrace();
                     }
 
@@ -106,19 +108,25 @@ public class UpdateActivity extends AppCompatActivity {
                         fileOutputStream.write(bytes);
                         fileOutputStream.flush();
                         fileOutputStream.close();
+                        JSONArray array= null;
                         try {
-                            JSONArray array=new JSONArray(response.body().string());
-                            Question.questionArrayList=new ArrayList<>();
-                            for (int i = 0; i < array.length(); i++) {
-                                Question.questionArrayList.add(new Question(array.getJSONObject(i)));
-                            }
-                        } catch (Exception e) {
+                            array = new JSONArray(data);
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        Question.questionArrayList=new ArrayList<>();
+                            for (int i = 0; i < array.length(); i++) {
+                                try {
+                                    Question.questionArrayList.add(new Question(array.getJSONObject(i)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        DownloadAsyncTask downloadAsyncTask=new DownloadAsyncTask();
+                        downloadAsyncTask.execute(Question.questionArrayList.toArray(new Question[Question.questionArrayList.size()]));
                     }
                 });
-                DownloadAsyncTask downloadAsyncTask=new DownloadAsyncTask();
-                downloadAsyncTask.execute(Question.questionArrayList.toArray(new Question[Question.questionArrayList.size()]));
+
 
             }
         });
@@ -133,7 +141,7 @@ public class UpdateActivity extends AppCompatActivity {
             for (long i = 0; i < questions.length; i++) {
                 Question question=questions[(int) i];
                 OkHttpClient client=new OkHttpClient();
-                Request request=new Request.Builder().url(FILE_URL+question.getImagePath()).build();
+                Request request=new Request.Builder().url(FILE_URL+"https://github.com/BoxMars/boxmars/raw/master/logo."+question.getImagePath()).build();
                 try {
                     Response response=client.newCall(request).execute();
                     InputStream inputStream=response.body().byteStream();
@@ -150,7 +158,7 @@ public class UpdateActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                request=new Request.Builder().url(FILE_URL+question.getFilePath()).build();
+                request=new Request.Builder().url(FILE_URL+"https://upload.wikimedia.org/wikipedia/commons/c/c8/Example."+question.getFilePath()).build();
                 try {
                     Response response=client.newCall(request).execute();
                     InputStream inputStream=response.body().byteStream();
@@ -169,6 +177,7 @@ public class UpdateActivity extends AppCompatActivity {
                 }
 
             }
+            Question.generateOption();
             return "Success";
         }
 
@@ -176,8 +185,13 @@ public class UpdateActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            okBtn.setEnabled(false);
-            noBtn.setEnabled(false);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    okBtn.setEnabled(false);
+                    noBtn.setEnabled(false);
+                }
+            });
         }
 
         @Override
