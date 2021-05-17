@@ -45,7 +45,7 @@ public class UpdateActivity extends AppCompatActivity {
         noBtn=findViewById(R.id.no);
         progressBar=findViewById(R.id.progressBar);
         textView=findViewById(R.id.infoText);
-        textView1.findViewById(R.id.progressText);
+        textView1=findViewById(R.id.progressText);
         noBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
