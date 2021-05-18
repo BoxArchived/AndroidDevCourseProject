@@ -38,9 +38,9 @@ public class RankAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         username.setText(users.get(position).getUsername());
         email.setText(users.get(position).getEmail());
         if (users.get(position).getEmail().equals(currentUser.getEmail())){
-            score.setTextSize(20);
-            username.setTextSize(20);
-            email.setTextSize(20);
+            score.setTextSize(18);
+            username.setTextSize(18);
+            email.setTextSize(18);
         }
         Log.d("BOX",users.get(position).getUsername());
         Log.d("BOX",users.size()+"");
