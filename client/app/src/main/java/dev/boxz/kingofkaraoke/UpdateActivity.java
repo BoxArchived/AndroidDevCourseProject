@@ -2,6 +2,7 @@ package dev.boxz.kingofkaraoke;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -180,6 +182,19 @@ public class UpdateActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            File file=new File(getFilesDir(),"version");
+            byte[] bytes= (MainActivity.version+"").getBytes();
+            try {
+                FileOutputStream fileOutputStream=new FileOutputStream(file);
+                fileOutputStream.write(bytes);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             Toast.makeText(getApplicationContext(),"Download finished!",Toast.LENGTH_LONG).show();
             finish();
         }
