@@ -1,6 +1,5 @@
 package dev.boxz.kingofkaraoke;
 
-import android.icu.lang.UScript;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.AsyncDifferConfig;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class RankAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<User> users;
