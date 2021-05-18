@@ -29,8 +29,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ScoreActivity extends AppCompatActivity {
-    final String API_URL="http://10.0.2.2:8888/getrank";
-    final String API_URL_SUBMIT="http://10.0.2.2:8888/submitrank";
+    final String API_URL="http://cisc3002api.boxz.dev/getrank";
+    final String API_URL_SUBMIT="http://cisc3002api.boxz.dev/submitrank";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +38,7 @@ public class ScoreActivity extends AppCompatActivity {
         User user=MainActivity.getUser();
         ImageView imageView=findViewById(R.id.conView);
         TextView rankTextView=findViewById(R.id.rankTextView);
+        rankTextView.setText("Connecting the server");
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
         int sum=0;
         for (int i = 0; i < Question.isCorrectList.size(); i++) {
@@ -101,6 +102,15 @@ public class ScoreActivity extends AppCompatActivity {
                                 }
                             }
                         }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                recyclerView.setAdapter(new RankAdapter(users,user));
+                                recyclerView.setNestedScrollingEnabled(false);
+                                rankTextView.setText("Rank");
+                            }
+                        });
 
 
                     }
@@ -108,9 +118,7 @@ public class ScoreActivity extends AppCompatActivity {
 
             }
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new RankAdapter(users,user));
-        recyclerView.setNestedScrollingEnabled(false);
+
 
 
     }
