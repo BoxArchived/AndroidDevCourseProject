@@ -75,6 +75,8 @@ public class Question implements Serializable {
     }
 
     public static void generateOption(){
+        isCorrectList=new ArrayList<>();
+        userAnswer=new ArrayList<>();
         for (int i = 0; i < questionArrayList.size(); i++) {
             ArrayList<Integer> options=new ArrayList<>();
             Random random=new Random();
@@ -89,7 +91,7 @@ public class Question implements Serializable {
             questionArrayList.get(i).setOptions(options);
             questionArrayList.get(i).setAnswer(result);
             isCorrectList.add(false);
-            userAnswer.add(0);
+            userAnswer.add(4);
         }
 
     }
