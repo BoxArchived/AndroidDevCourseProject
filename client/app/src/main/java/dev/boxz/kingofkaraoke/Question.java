@@ -80,9 +80,9 @@ public class Question implements Serializable {
             Random random=new Random();
             while(options.size()<=3){
                 int  result=random.nextInt(questionArrayList.size());
-//                if (result!=i&&!options.contains(result)){
+                if (result!=i&&!options.contains(result)){
                     options.add(result);
-//                }
+                }
             }
             int result=random.nextInt(4);
             options.add(result,i);

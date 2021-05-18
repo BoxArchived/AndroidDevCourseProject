@@ -32,7 +32,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class UpdateActivity extends AppCompatActivity {
-    final String API_URL="http://10.0.2.2:8888/songs";
+    final String API_URL="https://cisc3002api.boxz.dev/songs";
     Button okBtn;
     Button noBtn;
     ProgressBar progressBar;
@@ -71,12 +71,12 @@ public class UpdateActivity extends AppCompatActivity {
 
                 ArrayList<Question> questionArrayList=new ArrayList<>();
                 Random random=new Random();
-                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
-                    int  result=random.nextInt(Question.questionArrayList.size());
-                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
-                        questionArrayList.add(Question.questionArrayList.get(result));
-                    }
-                }
+//                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
+//                    int  result=random.nextInt(Question.questionArrayList.size());
+//                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+//                        questionArrayList.add(Question.questionArrayList.get(result));
+//                    }
+//                }
                 Question.questionArrayList=questionArrayList;
                 Question.generateOption();
                 finish();

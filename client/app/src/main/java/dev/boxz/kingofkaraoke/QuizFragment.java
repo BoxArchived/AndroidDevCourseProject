@@ -1,5 +1,6 @@
 package dev.boxz.kingofkaraoke;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
@@ -8,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -56,6 +59,35 @@ public class QuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_quiz, container, false);
+        Button previousBtn=view.findViewById(R.id.previousBtn);
+        Button nextBtn=view.findViewById(R.id.nextBtn);
+        Button submitBtn=view.findViewById(R.id.submitBtn);
+        ViewPager2 viewPager2=getActivity().findViewById(R.id.viewPage);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewPager2.getCurrentItem()<Question.questionArrayList.size()) {
+                    viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1, true);
+                }
+            }
+        });
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1=new Intent();
+                intent1.setClass(view.getContext(),ScoreActivity.class);
+                startActivity(intent1);
+
+            }
+        });
+        previousBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewPager2.getCurrentItem()>0) {
+                    viewPager2.setCurrentItem(viewPager2.getCurrentItem() - 1, true);
+                }
+            }
+        });
         TextView questionTextView=view.findViewById(R.id.questionTextView);
         seekBar=view.findViewById(R.id.seekBar);
         play=view.findViewById(R.id.startMusicBtn);
