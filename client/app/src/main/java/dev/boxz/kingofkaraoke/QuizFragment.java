@@ -2,6 +2,7 @@ package dev.boxz.kingofkaraoke;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -66,7 +67,7 @@ public class QuizFragment extends Fragment {
         RadioButton radioButtonB=view.findViewById(R.id.optionB);
         RadioButton radioButtonC=view.findViewById(R.id.optionC);
         RadioButton radioButtonD=view.findViewById(R.id.optionD);
-        questionTextView.setText("Who is the singer?");
+        questionTextView.setText("Who is the singer/ author?");
         play.setEnabled(true);
         pause.setEnabled(false);
         stop.setEnabled(false);
@@ -81,12 +82,12 @@ public class QuizFragment extends Fragment {
                 }
             }
         };
-        mediaPlayer=MediaPlayer.create(getActivity().getApplicationContext(), Uri.fromFile(new File(getActivity().getFilesDir(),mQuestion.getFilePath())));
+        mediaPlayer=MediaPlayer.create(getActivity().getApplicationContext(), Uri.fromFile(new File(getActivity().getFilesDir(),mQuestion.getSinger()+"MUSIC")));
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mediaPlayer==null){
-                    mediaPlayer=MediaPlayer.create(getActivity().getApplicationContext(), Uri.fromFile(new File(getActivity().getFilesDir(),mQuestion.getFilePath())));
+                    mediaPlayer=MediaPlayer.create(getActivity().getApplicationContext(), Uri.fromFile(new File(getActivity().getFilesDir(),mQuestion.getSinger()+"MUSIC")));
                 }
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
@@ -130,8 +131,18 @@ public class QuizFragment extends Fragment {
                 seekBar.setProgress(0);
             }
         });
-        Bitmap bitmap= BitmapFactory.decodeFile(new File(getActivity().getFilesDir(),mQuestion.getImagePath()).toString());
-        imageView.setImageBitmap(bitmap);
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(String.valueOf(new File(getActivity().getFilesDir(),mQuestion.getSinger()+"MUSIC")));
+        byte [] data = mmr.getEmbeddedPicture();
+        if(data != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            imageView.setImageBitmap(bitmap);
+        }
+        else {
+            imageView.setImageResource(R.drawable.ic_launcher_background);
+        }
+//        Bitmap bitmap= BitmapFactory.decodeFile(new File(getActivity().getFilesDir(),mQuestion.getSinger()+"COVER").toString());
+
         if (Question.userAnswer.get(Question.questionArrayList.indexOf(mQuestion))==0){
             radioButtonA.setChecked(true);
         }
@@ -170,11 +181,12 @@ public class QuizFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         if (mediaPlayer==null){
-            mediaPlayer=MediaPlayer.create(getActivity().getApplicationContext(), Uri.fromFile(new File(getActivity().getFilesDir(),mQuestion.getFilePath())));
+            mediaPlayer=MediaPlayer.create(getActivity().getApplicationContext(), Uri.fromFile(new File(getActivity().getFilesDir(),mQuestion.getSinger()+"MUSIC")));
         }
     }
 
