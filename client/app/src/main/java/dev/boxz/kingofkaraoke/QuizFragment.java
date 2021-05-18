@@ -35,6 +35,10 @@ public class QuizFragment extends Fragment {
     Button pause;
     private Question mQuestion;
     SeekBar seekBar;
+    RadioButton radioButtonA;
+    RadioButton radioButtonB;
+    RadioButton radioButtonC;
+    RadioButton radioButtonD;
     public QuizFragment() {
     }
 
@@ -95,10 +99,10 @@ public class QuizFragment extends Fragment {
         pause=view.findViewById(R.id.pauseMusicBtn);
         ImageView imageView=view.findViewById(R.id.coverImage);
         RadioGroup radioGroup=view.findViewById(R.id.radioGroup);
-        RadioButton radioButtonA=view.findViewById(R.id.optionA);
-        RadioButton radioButtonB=view.findViewById(R.id.optionB);
-        RadioButton radioButtonC=view.findViewById(R.id.optionC);
-        RadioButton radioButtonD=view.findViewById(R.id.optionD);
+        radioButtonA=view.findViewById(R.id.optionA);
+        radioButtonB=view.findViewById(R.id.optionB);
+        radioButtonC=view.findViewById(R.id.optionC);
+        radioButtonD=view.findViewById(R.id.optionD);
         questionTextView.setText("Who is the singer/ author?");
         play.setEnabled(true);
         pause.setEnabled(false);
@@ -188,10 +192,10 @@ public class QuizFragment extends Fragment {
             radioButtonD.setChecked(true);
         }
 
-        radioButtonA.setText(mQuestion.getOptions().get(0));
-        radioButtonB.setText(mQuestion.getOptions().get(1));
-        radioButtonC.setText(mQuestion.getOptions().get(2));
-        radioButtonD.setText(mQuestion.getOptions().get(3));
+        radioButtonA.setText(Question.questionArrayList.get(mQuestion.getOptions().get(0)).getSinger());
+        radioButtonB.setText(Question.questionArrayList.get(mQuestion.getOptions().get(1)).getSinger());
+        radioButtonC.setText(Question.questionArrayList.get(mQuestion.getOptions().get(2)).getSinger());
+        radioButtonD.setText(Question.questionArrayList.get(mQuestion.getOptions().get(3)).getSinger());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -225,6 +229,10 @@ public class QuizFragment extends Fragment {
         if (mediaPlayer==null){
             mediaPlayer=MediaPlayer.create(getActivity().getApplicationContext(), Uri.fromFile(new File(getActivity().getFilesDir(),mQuestion.getSinger()+"MUSIC")));
         }
+        radioButtonA.setText(Question.questionArrayList.get(mQuestion.getOptions().get(0)).getSinger());
+        radioButtonB.setText(Question.questionArrayList.get(mQuestion.getOptions().get(1)).getSinger());
+        radioButtonC.setText(Question.questionArrayList.get(mQuestion.getOptions().get(2)).getSinger());
+        radioButtonD.setText(Question.questionArrayList.get(mQuestion.getOptions().get(3)).getSinger());
     }
 
     @Override
