@@ -1,16 +1,13 @@
 package dev.boxz.kingofkaraoke;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
-import android.os.Bundle;
-
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -22,10 +19,9 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ScoreActivity extends AppCompatActivity {
@@ -46,23 +42,21 @@ public class ScoreActivity extends AppCompatActivity {
                 sum++;
             }
         }
-        if (sum==Question.questionArrayList.size()){
+        if (sum == Question.questionArrayList.size()) {
             imageView.setImageResource(R.drawable.congiatulations);
-        }
-        else {
+        } else {
             imageView.setVisibility(View.GONE);
         }
-        ArrayList<User> users=new ArrayList<>();
-        OkHttpClient post=new OkHttpClient();
-        RequestBody requestBody= new FormBody.Builder()
-                .add("username",user.getUsername())
-                .add("email",user.getEmail())
-                .add("score",String.valueOf(user.getScore()))
+        user.setScore(sum);
+        ArrayList<User> users = new ArrayList<>();
+        OkHttpClient post = new OkHttpClient();
+        HttpUrl url = HttpUrl.parse(API_URL_SUBMIT)
+                .newBuilder()
+                .addQueryParameter("username", user.getUsername())
+                .addQueryParameter("email", user.getEmail())
+                .addQueryParameter("score", String.valueOf(user.getScore()))
                 .build();
-        Request submit=new Request.Builder()
-                .url(API_URL_SUBMIT)
-                .post(requestBody)
-                .build();
+        Request submit = new Request.Builder().url(url).build();
         post.newCall(submit).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
