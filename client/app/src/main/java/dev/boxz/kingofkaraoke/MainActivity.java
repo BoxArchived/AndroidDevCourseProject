@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     Button startBtn;
     TextView textView;
     public static int version;
+    public static SharedPreferences sharedPreferences;
+
     final String VERSION_API="https://cisc3002api.boxz.dev/version";
 
     @Override
@@ -53,11 +56,61 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         auth0=new Auth0(getString(R.string.com_auth0_client_id),getString(R.string.com_auth0_domain));
+        File file=new File(getFilesDir(),Question.FILE_NAME);
+        try {
+            BufferedReader bufferedReader=new BufferedReader(new FileReader(file));
+            String inString;
+            StringBuilder sb = new StringBuilder();
+            while ((inString = bufferedReader.readLine()) != null) {
+                sb.append(inString);
+            }
+            JSONArray array=new JSONArray(sb.toString());
+            Question.questionArrayList=new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                Question.questionArrayList.add(new Question(array.getJSONObject(i)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        ArrayList<Question> questionArrayList=new ArrayList<>();
+        Random random=new Random();
+        while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
+            int  result=random.nextInt(Question.questionArrayList.size());
+            if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+                questionArrayList.add(Question.questionArrayList.get(result));
+            }
+        }
+        Question.questionArrayList=questionArrayList;
+        Question.generateOption();
         user=new User();
-        SharedPreferences sharedPreferences=getPreferences(MODE_PRIVATE);
-        version=sharedPreferences.getInt("version",-1);
         OkHttpClient client=new OkHttpClient();
         Request request=new Request.Builder().url(VERSION_API).build();
+        File versionFile=new File(getFilesDir(),"version");
+        if (!versionFile.exists()){
+            try {
+                versionFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            version=-1;
+        }
+        else {
+            try {
+                BufferedReader bufferedReader=new BufferedReader(new FileReader(versionFile));
+                String inString;
+                StringBuilder sb = new StringBuilder();
+                while ((inString = bufferedReader.readLine()) != null) {
+                    sb.append(inString);
+                }
+                version=Integer.parseInt(sb.toString());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         client.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -75,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 try {
                     if (jsonObject.getInt("version")>version){
+                        version=jsonObject.getInt("version");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -197,6 +251,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Question.generateOption();
     }
 
     private void logout() {
