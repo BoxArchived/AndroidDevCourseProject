@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import okhttp3.OkHttpClient;
 
 public class QuizActivity extends AppCompatActivity {
-    final String  API_URL="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
