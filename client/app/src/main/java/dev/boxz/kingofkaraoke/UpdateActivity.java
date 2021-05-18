@@ -77,7 +77,7 @@ public class UpdateActivity extends AppCompatActivity {
 //                        questionArrayList.add(Question.questionArrayList.get(result));
 //                    }
 //                }
-                Question.questionArrayList=questionArrayList;
+//                Question.questionArrayList=questionArrayList;
                 Question.generateOption();
                 finish();
             }
@@ -110,10 +110,7 @@ public class UpdateActivity extends AppCompatActivity {
                         JSONArray array= null;
                         try {
                             array = new JSONArray(data);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Question.questionArrayList=new ArrayList<>();
+                            Question.questionArrayList=new ArrayList<>();
                             for (int i = 0; i < array.length(); i++) {
                                 try {
                                     Question.questionArrayList.add(new Question(array.getJSONObject(i)));
@@ -121,8 +118,12 @@ public class UpdateActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                        DownloadAsyncTask downloadAsyncTask=new DownloadAsyncTask();
-                        downloadAsyncTask.execute(Question.questionArrayList.toArray(new Question[Question.questionArrayList.size()]));
+                            DownloadAsyncTask downloadAsyncTask=new DownloadAsyncTask();
+                            downloadAsyncTask.execute(Question.questionArrayList.toArray(new Question[Question.questionArrayList.size()]));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -140,23 +141,6 @@ public class UpdateActivity extends AppCompatActivity {
             for (long i = 0; i < questions.length; i++) {
                 Question question=questions[(int) i];
                 OkHttpClient client=new OkHttpClient();
-//                Request request=new Request.Builder().url(question.getImagePath()).build();
-//                try {
-//                    Response response=client.newCall(request).execute();
-//                    InputStream inputStream=response.body().byteStream();
-//                    Long size=response.body().contentLength();
-//                    FileOutputStream fileOutputStream=openFileOutput(question.getSinger()+"COVER",MODE_PRIVATE);
-//                    byte[] bytes=new byte[1024*4];
-//                    Long download=0L;
-//                    int read;
-//                    while ((read=inputStream.read(bytes))!=-1){
-//                        download+=read;
-//                        fileOutputStream.write(bytes,0,read);
-//                        publishProgress(download,size, 0L,i);
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
                 Request request=new Request.Builder().url(question.getFilePath()).build();
                 try {
                     Response response=client.newCall(request).execute();
@@ -204,12 +188,13 @@ public class UpdateActivity extends AppCompatActivity {
         protected void onProgressUpdate(Long... values) {
             super.onProgressUpdate(values);
             if (values[2]==0L){
-                textView.setText("Downloading the NO."+values[3]+1+" item's cover image.");
+                textView.setText("Downloading the NO."+(values[3]+1)+" item's cover image.");
             }
             if (values[2]==1L){
-                textView.setText("Downloading the NO."+values[3]+1+" item's mp3 file");
+                textView.setText("Downloading the NO."+(values[3]+1)+" item's mp3 file");
             }
             textView1.setText(values[0]+"/ "+values[1]);
+            textView.setMaxWidth(500);
             progressBar.setMax(values[1].intValue());
             progressBar.setProgress(values[0].intValue());
 
