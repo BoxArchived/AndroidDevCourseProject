@@ -78,16 +78,16 @@ public class Question implements Serializable {
         for (int i = 0; i < questionArrayList.size(); i++) {
             ArrayList<Integer> options=new ArrayList<>();
             Random random=new Random();
-//            while(options.size()<=3){
-//                int  result=random.nextInt(questionArrayList.size());
-//                if (result!=i&&!options.contains(result)){
-//                    options.add(result);
-//                }
-//            }
-//            int result=random.nextInt(4);
-//            options.add(result,i);
-//            questionArrayList.get(i).setOptions(options);
-//            questionArrayList.get(i).setAnswer(result);
+            while(options.size()<=3){
+                int result=random.nextInt(questionArrayList.size());
+                if (result!=i&&!options.contains(result)){
+                    options.add(result);
+                }
+            }
+            int result=random.nextInt(4);
+            options.add(result,i);
+            questionArrayList.get(i).setOptions(options);
+            questionArrayList.get(i).setAnswer(result);
             isCorrectList.add(false);
             userAnswer.add(0);
         }

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,23 @@ import com.auth0.android.provider.WebAuthProvider;
 import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserProfile;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private Auth0 auth0;
@@ -27,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     Button logoutBtn;
     Button startBtn;
     TextView textView;
+    public static int version;
+    final String VERSION_API="https://cisc3002api.boxz.dev/version";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +54,70 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         auth0=new Auth0(getString(R.string.com_auth0_client_id),getString(R.string.com_auth0_domain));
         user=new User();
-        Intent intent=new Intent(this,UpdateActivity.class);
-        startActivity(intent);
+        SharedPreferences sharedPreferences=getPreferences(MODE_PRIVATE);
+        version=sharedPreferences.getInt("version",-1);
+        OkHttpClient client=new OkHttpClient();
+        Request request=new Request.Builder().url(VERSION_API).build();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String data=response.body().string();
+                JSONObject jsonObject= null;
+                try {
+                    jsonObject = new JSONObject(data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (jsonObject.getInt("version")>version){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent=new Intent(getApplicationContext(),UpdateActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else {
+                        File file=new File(getFilesDir(),Question.FILE_NAME);
+                        try {
+                            BufferedReader bufferedReader=new BufferedReader(new FileReader(file));
+                            String inString;
+                            StringBuilder sb = new StringBuilder();
+                            while ((inString = bufferedReader.readLine()) != null) {
+                                sb.append(inString);
+                            }
+                            JSONArray array=new JSONArray(sb.toString());
+                            Question.questionArrayList=new ArrayList<>();
+                            for (int i = 0; i < array.length(); i++) {
+                                Question.questionArrayList.add(new Question(array.getJSONObject(i)));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                        ArrayList<Question> questionArrayList=new ArrayList<>();
+                        Random random=new Random();
+                        while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
+                            int  result=random.nextInt(Question.questionArrayList.size());
+                            if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+                                questionArrayList.add(Question.questionArrayList.get(result));
+                            }
+                        }
+                        Question.questionArrayList=questionArrayList;
+                        Question.generateOption();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         loginBtn=findViewById(R.id.loginBtn);
         logoutBtn=findViewById(R.id.logoutBtn);
         startBtn=findViewById(R.id.startQuizBtn);

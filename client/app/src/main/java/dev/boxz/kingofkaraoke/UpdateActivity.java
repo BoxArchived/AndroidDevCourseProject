@@ -71,13 +71,13 @@ public class UpdateActivity extends AppCompatActivity {
 
                 ArrayList<Question> questionArrayList=new ArrayList<>();
                 Random random=new Random();
-//                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
-//                    int  result=random.nextInt(Question.questionArrayList.size());
-//                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
-//                        questionArrayList.add(Question.questionArrayList.get(result));
-//                    }
-//                }
-//                Question.questionArrayList=questionArrayList;
+                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
+                    int  result=random.nextInt(Question.questionArrayList.size());
+                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+                        questionArrayList.add(Question.questionArrayList.get(result));
+                    }
+                }
+                Question.questionArrayList=questionArrayList;
                 Question.generateOption();
                 finish();
             }

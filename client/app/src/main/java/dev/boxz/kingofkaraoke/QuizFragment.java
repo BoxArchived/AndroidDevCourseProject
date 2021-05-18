@@ -187,6 +187,11 @@ public class QuizFragment extends Fragment {
         if (Question.userAnswer.get(Question.questionArrayList.indexOf(mQuestion))==3){
             radioButtonD.setChecked(true);
         }
+
+        radioButtonA.setText(mQuestion.getOptions().get(0));
+        radioButtonB.setText(mQuestion.getOptions().get(1));
+        radioButtonC.setText(mQuestion.getOptions().get(2));
+        radioButtonD.setText(mQuestion.getOptions().get(3));
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
