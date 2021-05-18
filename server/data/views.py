@@ -30,9 +30,9 @@ def get_rank(request):
     return JsonResponse(list, safe=False)
 
 def submit_rank(request):
-    username=request.POST[models.user_username_string]
-    email=request.POST[models.user_email_string]
-    score=request.POST[models.user_score_string]
+    username=request.GET.get(models.user_username_string)
+    email=request.GET.get(models.user_email_string)
+    score=request.GET.get(models.user_score_string)
     if len(models.User.objects.filter(email=email))==0:
         user=models.User(
             username=username,
