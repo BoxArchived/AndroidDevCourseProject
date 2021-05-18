@@ -22,6 +22,9 @@ question_coverFile_string='coverFile'
 question_coverURL_string='coverURL'
 question_correctAnswer_string='correctAnswer'
 serializers_format='json'
+user_username_string='username'
+user_email_string='email'
+user_score_string='score'
 # Create your models here.
 
 class Version(models.Model):
@@ -69,5 +72,17 @@ class Question(models.Model):
             question_options_string:options,
             question_coverURL_string:self.coverURL,
             question_correctAnswer_string:self.correctAnswer
+        }
+        return content
+
+class User(models.Model):
+    username=models.CharField(max_length=1024)
+    email=models.EmailField()
+    score=models.IntegerField()
+    def to_dict(self):
+        content={
+            user_username_string:self.username,
+            user_email_string:self.email,
+            user_score_string:self.score,
         }
         return content
