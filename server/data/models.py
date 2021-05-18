@@ -1,6 +1,3 @@
-import base64
-import random
-
 from django.db import models
 import json
 
