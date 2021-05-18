@@ -29,4 +29,14 @@ public class QuizActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onResume() {
+        ViewPager2 viewPager2=findViewById(R.id.viewPage);
+
+        QuizAdapter quizAdapter=new QuizAdapter(QuizActivity.this,Question.questionArrayList);
+        viewPager2.setAdapter(quizAdapter);
+        super.onResume();
+
+    }
 }
