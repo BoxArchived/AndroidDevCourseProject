@@ -69,15 +69,15 @@ public class UpdateActivity extends AppCompatActivity {
                 }
 
 
-//                ArrayList<Question> questionArrayList=new ArrayList<>();
-//                Random random=new Random();
-//                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
-//                    int  result=random.nextInt(Question.questionArrayList.size());
-//                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
-//                        questionArrayList.add(Question.questionArrayList.get(result));
-//                    }
-//                }
-//                Question.questionArrayList=questionArrayList;
+                ArrayList<Question> questionArrayList=new ArrayList<>();
+                Random random=new Random();
+                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
+                    int  result=random.nextInt(Question.questionArrayList.size());
+                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+                        questionArrayList.add(Question.questionArrayList.get(result));
+                    }
+                }
+                Question.questionArrayList=questionArrayList;
                 Question.generateOption();
                 finish();
             }
@@ -91,7 +91,6 @@ public class UpdateActivity extends AppCompatActivity {
                 okHttpClient.newCall(requestApi).enqueue(new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                        Toast.makeText(getApplicationContext(),"asdasd",Toast.LENGTH_LONG);
                         e.printStackTrace();
                     }
 
@@ -141,29 +140,29 @@ public class UpdateActivity extends AppCompatActivity {
             for (long i = 0; i < questions.length; i++) {
                 Question question=questions[(int) i];
                 OkHttpClient client=new OkHttpClient();
-                Request request=new Request.Builder().url(FILE_URL+"https://github.com/BoxMars/boxmars/raw/master/logo."+question.getImagePath()).build();
+//                Request request=new Request.Builder().url(question.getImagePath()).build();
+//                try {
+//                    Response response=client.newCall(request).execute();
+//                    InputStream inputStream=response.body().byteStream();
+//                    Long size=response.body().contentLength();
+//                    FileOutputStream fileOutputStream=openFileOutput(question.getSinger()+"COVER",MODE_PRIVATE);
+//                    byte[] bytes=new byte[1024*4];
+//                    Long download=0L;
+//                    int read;
+//                    while ((read=inputStream.read(bytes))!=-1){
+//                        download+=read;
+//                        fileOutputStream.write(bytes,0,read);
+//                        publishProgress(download,size, 0L,i);
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+                Request request=new Request.Builder().url(question.getFilePath()).build();
                 try {
                     Response response=client.newCall(request).execute();
                     InputStream inputStream=response.body().byteStream();
                     Long size=response.body().contentLength();
-                    FileOutputStream fileOutputStream=openFileOutput(question.getImagePath(),MODE_PRIVATE);
-                    byte[] bytes=new byte[1024*4];
-                    Long download=0L;
-                    int read;
-                    while ((read=inputStream.read(bytes))!=-1){
-                        download+=read;
-                        fileOutputStream.write(bytes,0,read);
-                        publishProgress(download,size, 0L,i);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                request=new Request.Builder().url(FILE_URL+"https://upload.wikimedia.org/wikipedia/commons/c/c8/Example."+question.getFilePath()).build();
-                try {
-                    Response response=client.newCall(request).execute();
-                    InputStream inputStream=response.body().byteStream();
-                    Long size=response.body().contentLength();
-                    FileOutputStream fileOutputStream=openFileOutput(question.getFilePath(),MODE_PRIVATE);
+                    FileOutputStream fileOutputStream=openFileOutput(question.getSinger()+"MUSIC",MODE_PRIVATE);
                     byte[] bytes=new byte[1024*4];
                     Long download=0L;
                     int read;
@@ -205,10 +204,10 @@ public class UpdateActivity extends AppCompatActivity {
         protected void onProgressUpdate(Long... values) {
             super.onProgressUpdate(values);
             if (values[2]==0L){
-                textView.setText("Downloading the NO."+values[3]+" item's cover image.");
+                textView.setText("Downloading the NO."+values[3]+1+" item's cover image.");
             }
             if (values[2]==1L){
-                textView.setText("Downloading the NO."+values[3]+" item's mp3 file");
+                textView.setText("Downloading the NO."+values[3]+1+" item's mp3 file");
             }
             textView1.setText(values[0]+"/ "+values[1]);
             progressBar.setMax(values[1].intValue());
