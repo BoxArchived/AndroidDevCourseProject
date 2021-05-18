@@ -50,34 +50,34 @@ public class UpdateActivity extends AppCompatActivity {
         noBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Question.questionArrayList==null){
-                    File file=new File(getFilesDir(),Question.FILE_NAME);
-                    try {
-                        BufferedReader bufferedReader=new BufferedReader(new FileReader(file));
-                        String inString;
-                        StringBuilder sb = new StringBuilder();
-                        while ((inString = bufferedReader.readLine()) != null) {
-                            sb.append(inString);
-                        }
-                        JSONArray array=new JSONArray(sb.toString());
-                        Question.questionArrayList=new ArrayList<>();
-                        for (int i = 0; i < array.length(); i++) {
-                            Question.questionArrayList.add(new Question(array.getJSONObject(i)));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-                }
-                ArrayList<Question> questionArrayList=new ArrayList<>();
-                Random random=new Random();
-                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())&&(Question.questionArrayList!=null||Question.questionArrayList.size()!=0)){
-                    int  result=random.nextInt(Question.questionArrayList.size());
-                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
-                        questionArrayList.add(Question.questionArrayList.get(result));
+                File file=new File(getFilesDir(),Question.FILE_NAME);
+                try {
+                    BufferedReader bufferedReader=new BufferedReader(new FileReader(file));
+                    String inString;
+                    StringBuilder sb = new StringBuilder();
+                    while ((inString = bufferedReader.readLine()) != null) {
+                        sb.append(inString);
                     }
+                    JSONArray array=new JSONArray(sb.toString());
+                    Question.questionArrayList=new ArrayList<>();
+                    for (int i = 0; i < array.length(); i++) {
+                        Question.questionArrayList.add(new Question(array.getJSONObject(i)));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                Question.questionArrayList=questionArrayList;
+
+
+//                ArrayList<Question> questionArrayList=new ArrayList<>();
+//                Random random=new Random();
+//                while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
+//                    int  result=random.nextInt(Question.questionArrayList.size());
+//                    if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+//                        questionArrayList.add(Question.questionArrayList.get(result));
+//                    }
+//                }
+//                Question.questionArrayList=questionArrayList;
                 Question.generateOption();
                 finish();
             }
