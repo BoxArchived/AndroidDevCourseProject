@@ -36,7 +36,6 @@ public class ScoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
         User user=MainActivity.getUser();
-//        TextView scoreTextView=findViewById(R.id.scoreTextView);
         ImageView imageView=findViewById(R.id.conView);
         TextView rankTextView=findViewById(R.id.rankTextView);
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
@@ -46,12 +45,6 @@ public class ScoreActivity extends AppCompatActivity {
                 sum++;
             }
         }
-        user.setScore(99);
-        String msg="User: "+ user.getUsername()+"\n"+
-                "Email: "+user.getEmail()+"\n"+
-                "Score: "+ sum+"/ "+Question.questionArrayList.size();
-//        scoreTextView.setText(msg);
-//        sum=Question.questionArrayList.size();
         if (sum==Question.questionArrayList.size()){
             imageView.setImageResource(R.drawable.congiatulations);
         }
@@ -115,12 +108,6 @@ public class ScoreActivity extends AppCompatActivity {
 
             }
         });
-
-
-//        for (int i = 0; i < 5; i++) {
-//            users.add(user);
-//        }
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new RankAdapter(users,user));
         recyclerView.setNestedScrollingEnabled(false);
