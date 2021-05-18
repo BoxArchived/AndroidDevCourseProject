@@ -21,3 +21,27 @@ def get_questions(request):
     for question in questions:
         list.append(question.to_dict())
     return JsonResponse(list)
+
+def get_rank(request):
+    list=[]
+    rank=models.User.objects.all()
+    for i in rank:
+        list.append(i.to_dict())
+    return JsonResponse(list, safe=False)
+
+def submit_rank(request):
+    username=request.POST[models.user_username_string]
+    email=request.POST[models.user_email_string]
+    score=request.POST[models.user_score_string]
+    if len(models.User.objects.filter(email=email))==0:
+        user=models.User(
+            username=username,
+            email=email,
+            score=score
+        )
+        user.save()
+    else:
+        user=models.User.objects.filter(email=email).first()
+        user.score=score
+        user.save()
+    return HttpResponse("OK")
