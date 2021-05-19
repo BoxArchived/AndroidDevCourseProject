@@ -3,6 +3,7 @@
 This is my project for [CISC3002](http://cis.um.edu.mo/bsccourses.php?code=CISC3002&year=16)
 
 ## Android
+`client` folder
 ### Development environment
 - Android Gradle Plugin 4.1.2
 - Gradle 6.5
@@ -17,6 +18,7 @@ This is my project for [CISC3002](http://cis.um.edu.mo/bsccourses.php?code=CISC3
 - Network access
 
 ## Server/ Python
+`server` folder
 ### Development environment
 - Windows 10
 - Python 3.8.3
