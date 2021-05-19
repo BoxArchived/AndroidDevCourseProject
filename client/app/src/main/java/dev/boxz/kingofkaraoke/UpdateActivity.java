@@ -52,7 +52,10 @@ public class UpdateActivity extends AppCompatActivity {
         noBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (MainActivity.version==-1){
+                    Toast.makeText(getApplicationContext(),"Need to update for the first start ",Toast.LENGTH_LONG);
+                    finish();
+                }
                 File file=new File(getFilesDir(),Question.FILE_NAME);
                 try {
                     BufferedReader bufferedReader=new BufferedReader(new FileReader(file));
@@ -157,7 +160,7 @@ public class UpdateActivity extends AppCompatActivity {
                         fileOutputStream.write(bytes,0,read);
                         publishProgress(download,size, 1L,i);
                     }
-                } catch (IOException e) {
+                } catch (IOException e  ) {
                     e.printStackTrace();
                 }
 
