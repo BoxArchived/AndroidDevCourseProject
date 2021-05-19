@@ -16,7 +16,7 @@
         <activity
             android:name=".UpdateActivity"
             android:theme="@style/Theme.AppCompat.Dialog.MinWidth"></activity>
-        <activity android:name=".QuizActivity" android:launchMode="singleInstance"/>
+            <activity android:name=".QuizActivity" android:launchMode="singleInstance"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
