@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="course-project-cisc3002">Course Project-CISC3002</h1>
+<p>ZHANG HUAKANG/ DB927606</p>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>This application named <em>King of Karaoke</em> is a quiz game about music. Users will login in with their account(they can use Google Account), answer a number of question which are randomly slected from a questions library within the specified time, finally submit their score to the server and let other users know their grade.</p>
+<p>In this project, I use <strong>Java</strong> and <strong>Android SDK</strong> to develop the front-end application. As for the back end which is used to store data, I use <strong>Python</strong> and <strong>Django Framework</strong> to develop it.</p>
+<p>Since the course focuses on Android application development, I will not go into details about the specific implementation of the back-end.  The source code of the whole project and other data used in this was upload to <strong><a href="https://github.com/BoxMars/AndroidDevCourseProject">Github</a></strong>.</p>
+<h2 id="details">Details</h2>
+<h3 id="login-loutout">Login/ Loutout</h3>
+<p>This part uses a third-party services named <strong><a href="https://auth0.com/">Auth0</a></strong> to implement. When user click the button to login or lognout.</p>
+<!-- ```Java
+Auth0 auth0=new Auth0();
+
+private void login(){
+    WebAuthProvider.login(auth0)
+        .withScheme("demo")
+        .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
+        .start(this, new Callback<Credentials, AuthenticationException>() {
+            @Override
+            public void onSuccess(Credentials credentials) {
+                /*
+                * get user's info and store them.
+                */
+            }
+
+            @Override
+            public void onFailure(AuthenticationException e) {}
+        });
+
+    }
+
+private void logout() {
+    WebAuthProvider.logout(auth0)
+        .withScheme("demo")
+        .start(this, new Callback<Void, AuthenticationException>() {
+            @Override
+            public void onSuccess(@Nullable Void payload) {
+                /*
+                * clear the user's data.
+                */
+            }
+
+            @Override
+            public void onFailure(@NonNull AuthenticationException error) {}
+        });
+
+}
+``` -->
+<p>When user click <em>Login</em> button, <em>Auth0</em> will bring up a browser window.</p>
+<div  align="center">    
+    <img src="img/login.png" width = "30%" alt="图片名称" align=center style="margin:10px"/><img src="img/main.png" width = "30%" alt="图片名称" align=center style="margin:10px"/>
+</div>
+<p>After the user login successfully, the application will get the username and the email which will be stored and the email will be used as the unique identification information of the scoring system.</p>
+<h3 id="update-the-data-library">Update the data library</h3>
+<p>When the application starts, it will send a request to the server and get the latest version number of the songs library (<a href="https://cisc3002api.boxz.dev/version">VERSION_API</a>). At the same time, it will also get the version information stored locally. If those two version number are different, the application will call a new <em>Activity</em> with dialog theme to ask the user whether to update the information. If user choose <em>Yes</em>, the application will request the songs infomation in <code>JSON</code> (<a href="https://cisc3002api.boxz.dev/songs">SONGS_API</a>), like this:</p>
+<pre class="hljs"><code><div>[
+    {
+        <span class="hljs-attr">"song"</span>: <span class="hljs-string">"Chocolate"</span>, 
+        <span class="hljs-attr">"singer"</span>: <span class="hljs-string">"Alfonso Lugo"</span>, 
+        <span class="hljs-attr">"songURL"</span>: <span class="hljs-string">"https://github.com/BoxMars/AndroidDevCourseProject/raw/master/static/Alfonso_Lugo_-_Chocolate.mp3"</span>
+    }, 
+    {
+        <span class="hljs-attr">"song"</span>: <span class="hljs-string">"Study and Relax"</span>,
+        <span class="hljs-attr">"singer"</span>: <span class="hljs-string">"D JAY KOI"</span>, 
+        <span class="hljs-attr">"songURL"</span>: <span class="hljs-string">"https://github.com/BoxMars/AndroidDevCourseProject/raw/master/static/D_JAY_KOI_-_HOUSE_PARTY_._Feat_Fil_Straughan__.mp3"</span>
+    }, 
+    ...
+    ...
+    ...
+]
+</div></code></pre>
+<p>Those infomation will be stored in application's internal storage. A <code>DownloadAsynTask</code> will start to download all music and sotre them in internal storage.</p>
+<div  align="center">    
+    <img src="img/update1.png" width = "30%" alt="图片名称" align=center style="margin:10px"/><img src="img/update2.png" width = "30%" alt="图片名称" align=center style="margin:10px"/>
+</div>
+<h3 id="quiz">Quiz</h3>
+<p>The Quiz activeity consists of five parts. On the top there is a <em>countdown timer</em>. Under the coundown timer is the <em>music player</em> part and the <em>cover image</em> of the music. Then, there are four radio button and three button, <em>Previous</em>, <em>Next</em>, and <em>Submit</em>.</p>
+<div  align="center">    
+    <img src="img/quiz2.png" width = "30%" alt="图片名称" align=center style="margin:10px"/><img src="img/quiz1.png" width = "30%" alt="图片名称" align=center style="margin:10px"/>
+</div>
+Every question are chosen from question library randomly, and the option of each question are also randomly generated. 
+<p>The function that several questions can be swiped on the screen is implemented by <code>ViewPage2</code> and <code>Fragment</code>. The two buttons at the boottom can also be used to browse between different questions.</p>
+<h4 id="countdown-timer">Countdown Timer</h4>
+<p>User can submit his/her answers before within the specified time, or answers are automatically submitted, when time runs out.</p>
+<h4 id="music-player">Music Player</h4>
+<p>It has three function: <em>Start</em>, <em>Pause</em> and <em>Stop</em> to control the music playing.</p>
+<div  align="center">    
+    <img src="img/music1.png" width = "40%" alt="图片名称" align=center style="margin:10px"/><img src="img/music2.png" width = "40%" alt="图片名称" align=center style="margin:10px"/>
+</div>
+The first image shows the music is stopped or not started. The second image shows that the music is paused after starting.
+<p>The cover image are directly from MP3 file's metadata. I use <code>MediaMetadataRetriever</code> to decode the infomation and show it on the screen.</p>
+<pre class="hljs"><code><div>MediaMetadataRetriever mmr = <span class="hljs-keyword">new</span> MediaMetadataRetriever();
+mmr.setDataSource(String.valueOf(<span class="hljs-keyword">new</span> File(getActivity().getFilesDir(),<span class="hljs-string">"mp3 file name"</span>)));
+<span class="hljs-keyword">byte</span> [] data = mmr.getEmbeddedPicture();
+Bitmap bitmap = BitmapFactory.decodeByteArray(data, <span class="hljs-number">0</span>, data.length);
+imageView.setImageBitmap(bitmap);
+</div></code></pre>
+
+</body>
+</html>
