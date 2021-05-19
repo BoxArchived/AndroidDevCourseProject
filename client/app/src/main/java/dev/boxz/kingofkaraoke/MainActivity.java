@@ -57,34 +57,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         auth0=new Auth0(getString(R.string.com_auth0_client_id),getString(R.string.com_auth0_domain));
         File file=new File(getFilesDir(),Question.FILE_NAME);
-        try {
-            BufferedReader bufferedReader=new BufferedReader(new FileReader(file));
-            String inString;
-            StringBuilder sb = new StringBuilder();
-            while ((inString = bufferedReader.readLine()) != null) {
-                sb.append(inString);
+        if (file.exists()){
+            try {
+                BufferedReader bufferedReader=new BufferedReader(new FileReader(file));
+                String inString;
+                StringBuilder sb = new StringBuilder();
+                while ((inString = bufferedReader.readLine()) != null) {
+                    sb.append(inString);
+                }
+                JSONArray array=new JSONArray(sb.toString());
+                Question.questionArrayList=new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    Question.questionArrayList.add(new Question(array.getJSONObject(i)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            JSONArray array=new JSONArray(sb.toString());
-            Question.questionArrayList=new ArrayList<>();
-            for (int i = 0; i < array.length(); i++) {
-                Question.questionArrayList.add(new Question(array.getJSONObject(i)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
-        ArrayList<Question> questionArrayList=new ArrayList<>();
-        Random random=new Random();
-        while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
-            int  result=random.nextInt(Question.questionArrayList.size());
-            if (!questionArrayList.contains(Question.questionArrayList.get(result))){
-                questionArrayList.add(Question.questionArrayList.get(result));
+            ArrayList<Question> questionArrayList=new ArrayList<>();
+            Random random=new Random();
+            while (questionArrayList.size()<=Math.min(8,Question.questionArrayList.size())){
+                int  result=random.nextInt(Question.questionArrayList.size());
+                if (!questionArrayList.contains(Question.questionArrayList.get(result))){
+                    questionArrayList.add(Question.questionArrayList.get(result));
+                }
             }
+            Question.questionArrayList=questionArrayList;
+            Question.generateOption();
         }
-        Question.questionArrayList=questionArrayList;
-        Question.generateOption();
+
         user=new User();
+        startBtn=findViewById(R.id.startQuizBtn);
         OkHttpClient client=new OkHttpClient();
         Request request=new Request.Builder().url(VERSION_API).build();
         File versionFile=new File(getFilesDir(),"version");
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             version=-1;
+            startBtn.setEnabled(false);
         }
         else {
             try {
@@ -174,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         });
         loginBtn=findViewById(R.id.loginBtn);
         logoutBtn=findViewById(R.id.logoutBtn);
-        startBtn=findViewById(R.id.startQuizBtn);
         textView=findViewById(R.id.infoTextView);
         loginBtn.setEnabled(true);
         logoutBtn.setEnabled(false);
@@ -198,8 +202,13 @@ public class MainActivity extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),QuizActivity.class);
-                startActivity(intent);
+                if (Question.questionArrayList.size()==0){
+                    Toast.makeText(getApplicationContext(),"Need to update",Toast.LENGTH_LONG);
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -256,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         Question.generateOption();
     }
 
